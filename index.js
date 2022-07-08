@@ -46,7 +46,7 @@ type Event = {
 type State = {
   width: number,
   height: number,
-  openOffsetMenuPercentage: number,
+  openMenuOffsetPercentage: number,
   openMenuOffset: number,
   hiddenMenuOffsetPercentage: number,
   hiddenMenuOffset: number,
@@ -78,7 +78,7 @@ export default class SideMenu extends React.PureComponent {
     this.isOpen = !!props.isOpen;
 
     const initialMenuPositionMultiplier = props.menuPosition === 'right' ? -1 : 1;
-    const openOffsetMenuPercentage = props.openMenuOffset / deviceScreen.width;
+    const openMenuOffsetPercentage = props.openMenuOffset / deviceScreen.width;
     const hiddenMenuOffsetPercentage = props.hiddenMenuOffset / deviceScreen.width;
     const left: Animated.Value = new Animated.Value(
       props.isOpen
@@ -96,8 +96,8 @@ export default class SideMenu extends React.PureComponent {
     this.state = {
       width: deviceScreen.width,
       height: deviceScreen.height,
-      openOffsetMenuPercentage,
-      openMenuOffset: deviceScreen.width * openOffsetMenuPercentage,
+      openMenuOffsetPercentage,
+      openMenuOffset: deviceScreen.width * openMenuOffsetPercentage,
       hiddenMenuOffsetPercentage,
       hiddenMenuOffset: deviceScreen.width * hiddenMenuOffsetPercentage,
       left,
@@ -133,7 +133,8 @@ export default class SideMenu extends React.PureComponent {
 
   onLayoutChange(e: Event) {
     const { width, height } = e.nativeEvent.layout;
-    const openMenuOffset = width * this.state.openOffsetMenuPercentage;
+    const openMenuOffsetPercentage = this.props.openMenuOffset / Dimensions.get('screen').width;
+    const openMenuOffset = width * openMenuOffsetPercentage;
     const hiddenMenuOffset = width * this.state.hiddenMenuOffsetPercentage;
     this.setState({ width, height, openMenuOffset, hiddenMenuOffset });
   }
